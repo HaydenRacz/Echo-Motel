@@ -1,5 +1,6 @@
 var dailyPrice=0, room=0, checkedAddItems;
 var totalCost=0;
+var breakfastTotal = 0;
 
 function updateRoom() {
 	room= this.dataset.name;
@@ -8,11 +9,13 @@ function updateRoom() {
 	alert(dailyPrice);
 	window.scrollTo(0, document.getElementById("roomInformation").offsetTop - 40);
 	document.getElementById("roomOutput").innerHTML=room;
-	document.getElementById("priceOutput").innerHTML= "$"+dailyPrice;
+	document.getElementById("dailyPriceOutput").innerHTML= "$"+dailyPrice;
 	checkInputs(dailyPrice,room);
 }
 
 function updateBooking() {
+	var checkInDate = document.getElementById("checkInDate").value;
+	var numberNights = document.getElementById("numberNights").value;
 	var addItems = document.getElementsByClassName('addCheck');
 	//this collects all my additional items checkboxes and stores them in an object array
 	checkedAddItems = []; //empty list to add the selected additional items to 
@@ -24,17 +27,22 @@ function updateBooking() {
 			addCost += Number(addItems[i].dataset.price);
 			alert(addCost);
 		}
+		if (addItems[i].value == "Breakfast") {
+			if (addItems[i].checked)
+				var breakfastCost = 25; //breakfast cost is defined here 
+				breakfastTotal = breakfastCost * numberNights; //calculating breakfast total
+				alert(breakfastTotal)
+		}
 	}
-	var checkInDate = document.getElementById("checkInDate").value;
-	var numberNights = document.getElementById("numberNights").value;
 	alert("number nights" + numberNights);
 	alert("check in date" + checkInDate);
-	totalCost = addCost + dailyPrice*numberNights;
+	totalCost = addCost + dailyPrice*numberNights + breakfastTotal;
 	alert("total cost"+ totalCost);
-	document.getElementById("dateOutput").innerHTML=checkInDate;
+	document.getElementById("checkInDateOutput").innerHTML=checkInDate;
 	document.getElementById("totalOutput").innerHTML="$"+totalCost;
 	document.getElementById("nightsOutput").innerHTML=numberNights;
 	document.getElementById("extrasOutput").innerHTML=checkedAddItems;
+	document.getElementById("breakfastOutput").innerHTML=breakfastTotal;
 }
 
 function checkInputs(numberNights){
@@ -44,15 +52,15 @@ function checkInputs(numberNights){
 		alert("You need to enter number correct number of nights");
 		return; //stops the function from running = put an inline message output div
 		
-	}
+		}
 	
-//write if statements to check names aganist patterns
-var firstName=document.getElementById("firstNameInput").value;
-var lastName=document.getElementById("lastNameInput").value;
-var cellphone=document.getElementById("cellphoneInput").value;
-var email=document.getElementById("emailInput").value;
-alert(firstName + lastName + cellphone + email);
-//writes if statements here to check inpyuts are not null and patterns mismatch for excellence
+	//write if statements to check names aganist patterns
+	var firstName=document.getElementById("firstNameInput").value;
+	var lastName=document.getElementById("lastNameInput").value;
+	var cellphone=document.getElementById("cellphoneInput").value;
+	var email=document.getElementById("emailInput").value;
+	alert(firstName + lastName + cellphone + email);
+	//writes if statements here to check inpyuts are not null and patterns mismatch for excellence
 }
 
 
@@ -79,7 +87,6 @@ var roomInputs = document.getElementsByClassName('roomCard');
 for (i = 0; i < roomInputs.length; i++) {
 	roomInputs[i].addEventListener('click', updateRoom);
 }
-
 
 
 function myFunction() {
